@@ -14,6 +14,8 @@ declare global
             render: (container: string | HTMLElement, options: TurnstileOptions) => string;
             reset: (widgetId: string) => void;
             remove: (widgetId: string) => void;
+            execute: (container: string | HTMLElement, options?: TurnstileOptions) => void;
+            getResponse: (widgetId?: string) => string | undefined;
         };
     }
 }
@@ -26,6 +28,7 @@ interface TurnstileOptions
     'expired-callback'?: () => void;
     size?: 'normal' | 'compact' | 'invisible';
     theme?: 'light' | 'dark' | 'auto';
+    execution?: 'render' | 'execute';
 }
 
 /*----------------------------------------
@@ -71,7 +74,7 @@ export default function ContactForm()
                 {
                     setTurnstileToken(null);
                 },
-                size: 'invisible',
+                size: 'normal',
                 theme: 'light',
             });
         }
@@ -132,7 +135,7 @@ export default function ContactForm()
         if (!turnstileToken)
         {
             setStatus('error');
-            setErrorMessage('Security verification failed. Please refresh the page and try again.');
+            setErrorMessage('Please complete the security verification checkbox above before submitting.');
             return;
         }
 
@@ -298,8 +301,8 @@ export default function ContactForm()
                     />
                 </div>
 
-                {/* Turnstile Widget Container (invisible) */}
-                <div ref={turnstileRef} className="cf-turnstile" />
+                {/* Turnstile Widget Container */}
+                <div ref={turnstileRef} className="cf-turnstile mb-2" />
 
                 {/* Submit Button */}
                 <button
