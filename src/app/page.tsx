@@ -233,7 +233,7 @@ export default function Home()
             </section>
 
             {/* CTA Section */}
-            <section className="bg-[var(--primary)] py-20">
+            <section className="bg-[#e94e1a] py-20">
                 <div className="container text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
                         Ready to Start Your Project?
