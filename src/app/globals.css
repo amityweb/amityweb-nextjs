@@ -269,6 +269,21 @@ a:hover {
     background: var(--primary);
 }
 
+/* Footer menu styles */
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu li {
+    padding: 0;
+    margin-bottom: 0.625rem;
+}
+
+.footer-menu li:last-child {
+    margin-bottom: 0;
+}
 
 /* Prose styling for blog content */
 .prose {

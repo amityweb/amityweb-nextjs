@@ -32,7 +32,7 @@ export default function Footer()
                     {/* Services */}
                     <div>
                         <h3 className="font-semibold text-[var(--foreground)] mb-4">Services</h3>
-                        <ul className="space-y-3">
+                        <ul className="footer-menu">
                             <li>
                                 <Link href="/services/web-design" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Web Design
@@ -44,23 +44,23 @@ export default function Footer()
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services/hosting" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
-                                    Hosting
+                                <Link href="/services/web-hosting" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Web Hosting
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services/maintenance" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
-                                    Support & Maintenance
+                                <Link href="/services/website-support" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Website Support
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/web-design-cardiff" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
-                                    Web Design Cardiff
+                                <Link href="/services/website-maintenance" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Website Maintenance
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/web-design-newport" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
-                                    Web Design Newport
+                                <Link href="/services/bug-fixing" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Bug Fixing & Repairs
                                 </Link>
                             </li>
                         </ul>
@@ -69,7 +69,7 @@ export default function Footer()
                     {/* Company */}
                     <div>
                         <h3 className="font-semibold text-[var(--foreground)] mb-4">Company</h3>
-                        <ul className="space-y-3">
+                        <ul className="footer-menu">
                             <li>
                                 <Link href="/about" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     About Us
@@ -106,7 +106,7 @@ export default function Footer()
                     {/* Legal */}
                     <div>
                         <h3 className="font-semibold text-[var(--foreground)] mb-4">Legal</h3>
-                        <ul className="space-y-3">
+                        <ul className="footer-menu">
                             <li>
                                 <Link href="/legal/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Privacy Policy
