@@ -93,7 +93,7 @@ export default function ContactForm()
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
+                        className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
                         placeholder="John Smith"
                     />
                 </div>
@@ -110,7 +110,7 @@ export default function ContactForm()
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
+                        className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
                         placeholder="john@example.com"
                     />
                 </div>
@@ -126,7 +126,7 @@ export default function ContactForm()
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
+                        className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
                         placeholder="029 2088 6582"
                     />
                 </div>
@@ -142,7 +142,7 @@ export default function ContactForm()
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
+                        className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow"
                         placeholder="Your Company Ltd"
                     />
                 </div>
@@ -160,7 +160,7 @@ export default function ContactForm()
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow resize-vertical"
+                    className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow resize-vertical"
                     placeholder="Tell us about your project..."
                 />
             </div>

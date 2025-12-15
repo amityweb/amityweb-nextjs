@@ -136,7 +136,6 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.25rem;
 }
 
 .card-icon svg {
@@ -213,10 +212,11 @@ a:hover {
     height: 2.5rem;
     background: white;
     border: 2px solid var(--primary);
-    border-radius: 9999px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     top: 50%;
     transform: translateY(-50%);
+    color: var(--primary);
 }
 
 /* Position arrows outside the slider */
@@ -231,11 +231,12 @@ a:hover {
 .reviews-slider .swiper-button-prev:hover,
 .reviews-slider .swiper-button-next:hover {
     background: var(--primary);
+    color: white;
 }
 
 .reviews-slider .swiper-button-prev::after,
 .reviews-slider .swiper-button-next::after {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: var(--primary);
 }
@@ -395,6 +396,18 @@ a:hover {
 .prose th {
     background: var(--surface);
     font-weight: 600;
+}
+
+/* FAQ styling */
+.faq-section details {
+    margin-bottom: 0;
+}
+
+.faq-section summary {
+    background: var(--background-alt);
+    border-radius: 0.5rem;
+    padding: 10px 20px;
+    margin-bottom: 20px;
 }
 
 /* Line clamp utility */

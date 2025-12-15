@@ -80,18 +80,15 @@ export default function Home()
                 <div className="container">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="relative">
-                            {/* Placeholder for team/office image */}
-                            <div className="aspect-[4/3] bg-[var(--bg)] rounded-2xl flex items-center justify-center border border-[var(--border)]">
-                                <div className="text-center p-8">
-                                    <Image
-                                        src="/cyber-essentials-badge.svg"
-                                        alt="Cyber Essentials Certified"
-                                        width={120}
-                                        height={120}
-                                        className="mx-auto mb-4 opacity-60"
-                                    />
-                                    <p className="text-[var(--muted)]">Cyber Essentials Certified</p>
-                                </div>
+                            {/* Laurence Cope photo */}
+                            <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--border)]">
+                                <Image
+                                    src="/laurence-cope.png"
+                                    alt="Laurence Cope - Founder of Amity Web Solutions"
+                                    width={1277}
+                                    height={980}
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
                         <div>
@@ -171,7 +168,7 @@ export default function Home()
                             Ready to Start Your Project?
                         </h2>
                         <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-                            Let&apos;s discuss how we can help bring your digital vision to life.
+                            Let&apos;s discuss how we can help bring your digital presence to life.
                         </p>
                         <Link 
                             href="/contact" 

@@ -11,6 +11,18 @@ export interface PortfolioItem
     technologies?: string[];
 }
 
+/*----------------------------------------
+Get unique technologies from all portfolio items
+----------------------------------------*/
+export function getTechnologies(): string[]
+{
+    const techSet = new Set<string>();
+    portfolioItems.forEach(item => {
+        item.technologies?.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet).sort();
+}
+
 export const portfolioItems: PortfolioItem[] = [
     { 
         title: 'Carer Friendly Wales', 

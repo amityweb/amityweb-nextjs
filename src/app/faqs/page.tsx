@@ -131,7 +131,7 @@ export default function FAQsPage()
                         This section is intended to provide you with answers to common questions as well as general information about the company. If you can&apos;t find what you require, don&apos;t hesitate to <Link href="/contact" className="text-[var(--primary)] hover:underline">drop us a line</Link>.
                     </p>
                     
-                    <div className="space-y-12">
+                    <div className="space-y-12 faq-section">
                         {faqSections.map((section, sectionIndex) => (
                             <div key={sectionIndex}>
                                 <h2 className="text-2xl font-bold mb-6">{section.title}</h2>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Card from '@/components/Card';
 import { blogPosts, getCategories } from '@/data/blogPosts';
 import type { Metadata } from 'next';
 
@@ -86,31 +86,16 @@ export default async function BlogPage(
                 <div className="container">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {paginatedPosts.map((post) => (
-                            <article key={post.slug} className="card group">
-                                <Link href={`/blog/${post.slug}`}>
-                                    {/* Image */}
-                                    <div className="aspect-video bg-[var(--secondary)] rounded-lg mb-4 overflow-hidden flex items-center justify-center">
-                                        {post.image ? (
-                                            <Image
-                                                src={post.image}
-                                                alt={post.title}
-                                                width={400}
-                                                height={225}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                        ) : (
-                                            <Image
-                                                src="/logo-white.svg"
-                                                alt="Amity Web Solutions"
-                                                width={120}
-                                                height={40}
-                                                className="opacity-50"
-                                            />
-                                        )}
-                                    </div>
-                                    
-                                    {/* Category & Date */}
-                                    <div className="flex items-center gap-3 text-sm text-[var(--muted)] mb-2">
+                            <Card
+                                key={post.slug}
+                                href={`/blog/${post.slug}`}
+                                image={post.image}
+                                imageAlt={post.title}
+                                title={post.title}
+                                description={post.excerpt}
+                                tags={post.tags}
+                                meta={
+                                    <div className="flex items-center gap-3">
                                         {post.category && (
                                             <>
                                                 <span className="text-[var(--primary)]">{post.category}</span>
@@ -125,18 +110,8 @@ export default async function BlogPage(
                                             })}
                                         </time>
                                     </div>
-                                    
-                                    {/* Title */}
-                                    <h2 className="text-xl font-semibold mb-2 group-hover:text-[var(--primary)] transition-colors">
-                                        {post.title}
-                                    </h2>
-                                    
-                                    {/* Excerpt */}
-                                    <p className="text-[var(--muted)] line-clamp-3">
-                                        {post.excerpt}
-                                    </p>
-                                </Link>
-                            </article>
+                                }
+                            />
                         ))}
                     </div>
                     

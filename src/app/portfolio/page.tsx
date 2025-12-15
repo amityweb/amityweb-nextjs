@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { portfolioItems } from '@/data/portfolio';
+import Card from '@/components/Card';
+import { portfolioItems, getTechnologies } from '@/data/portfolio';
 
 export const metadata: Metadata = {
     title: 'Portfolio',
@@ -9,10 +9,23 @@ export const metadata: Metadata = {
 };
 
 /*----------------------------------------
-Portfolio page component
+Portfolio page component with tag filtering
 ----------------------------------------*/
-export default function PortfolioPage()
+export default async function PortfolioPage(
+    { searchParams }: { searchParams: Promise<{ tag?: string }> }
+)
 {
+    const params = await searchParams;
+    const selectedTag = params.tag || '';
+    
+    /* Filter by tag if specified */
+    const filteredItems = selectedTag 
+        ? portfolioItems.filter(item => item.technologies?.includes(selectedTag))
+        : portfolioItems;
+    
+    /* Get all unique technologies */
+    const technologies = getTechnologies();
+
     return (
         <>
             {/* Hero Section */}
@@ -30,53 +43,60 @@ export default function PortfolioPage()
                 </div>
             </section>
 
+            {/* Tag Filter */}
+            <section className="py-6 border-b border-[var(--border)]">
+                <div className="container">
+                    <div className="flex flex-wrap justify-center gap-2">
+                        <Link 
+                            href="/portfolio"
+                            className={`px-4 py-2 text-sm font-medium transition-colors ${
+                                !selectedTag 
+                                    ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                    : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+                            }`}
+                        >
+                            All Projects
+                        </Link>
+                        {technologies.map((tech) => (
+                            <Link 
+                                key={tech}
+                                href={`/portfolio?tag=${encodeURIComponent(tech)}`}
+                                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                                    selectedTag === tech 
+                                        ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                        : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+                                }`}
+                            >
+                                {tech}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Portfolio Grid */}
             <section className="section bg-white">
                 <div className="container">
                     {/* Portfolio Items */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {portfolioItems.map((item) => (
-                            <article
+                        {filteredItems.map((item) => (
+                            <Card
                                 key={item.slug}
-                                className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-                            >
-                                {/* Image */}
-                                <div className="relative aspect-video bg-[var(--secondary)] overflow-hidden flex items-center justify-center">
-                                    <Image
-                                        src="/logo-white.svg"
-                                        alt={item.title}
-                                        width={120}
-                                        height={40}
-                                        className="opacity-30"
-                                    />
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-6">
-                                    <h3 className="text-xl font-semibold mb-3">
-                                        {item.title}
-                                    </h3>
-                                    {item.description && (
-                                        <p className="text-[var(--muted)] mb-4">
-                                            {item.description}
-                                        </p>
-                                    )}
-                                    {item.technologies && (
-                                        <div className="flex flex-wrap gap-2">
-                                            {item.technologies.map((tech) => (
-                                                <span
-                                                    key={tech}
-                                                    className="px-3 py-1 bg-gray-100 rounded-full text-xs font-medium text-[var(--secondary)]"
-                                                >
-                                                    {tech}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </article>
+                                href={`/portfolio/${item.slug}`}
+                                image={item.image}
+                                imageAlt={item.title}
+                                title={item.title}
+                                description={item.description}
+                                tags={item.technologies}
+                            />
                         ))}
                     </div>
+                    
+                    {/* Results count */}
+                    <p className="text-center text-[var(--muted)] mt-8">
+                        Showing {filteredItems.length} project{filteredItems.length !== 1 ? 's' : ''}
+                        {selectedTag && ` tagged with "${selectedTag}"`}
+                    </p>
                 </div>
             </section>
 
