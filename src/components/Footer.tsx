@@ -10,7 +10,7 @@ export default function Footer()
     return (
         <footer className="bg-white border-t border-[var(--border)] pt-20 pb-8">
             <div className="container">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
                     {/* Company Info */}
                     <div>
                         <Link href="/" className="flex items-center gap-2 mb-4">
@@ -34,23 +34,33 @@ export default function Footer()
                         <h3 className="font-semibold text-[var(--foreground)] mb-4">Services</h3>
                         <ul className="space-y-3">
                             <li>
-                                <Link href="/services#web-design" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/services/web-design" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Web Design
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services#web-development" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/services/web-development" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Web Development
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services#hosting" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/services/hosting" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Hosting
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services#maintenance" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/services/maintenance" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Support & Maintenance
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/web-design-cardiff" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Web Design Cardiff
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/web-design-newport" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Web Design Newport
                                 </Link>
                             </li>
                         </ul>
@@ -71,8 +81,70 @@ export default function Footer()
                                 </Link>
                             </li>
                             <li>
+                                <Link href="/blog" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Blog
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/faqs" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    FAQs
+                                </Link>
+                            </li>
+                            <li>
                                 <Link href="/contact" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Contact
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/sitemap-page" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Sitemap
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Legal */}
+                    <div>
+                        <h3 className="font-semibold text-[var(--foreground)] mb-4">Legal</h3>
+                        <ul className="space-y-3">
+                            <li>
+                                <Link href="/legal/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Privacy Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/legal/cookie-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Cookie Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <a href="/terms-of-business.pdf" target="_blank" rel="noopener noreferrer" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Terms & Conditions
+                                </a>
+                            </li>
+                            <li>
+                                <Link href="/legal/acceptable-use-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Acceptable Use Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/legal/security-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Security Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/legal/disclaimer" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Disclaimer
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/legal/copyright" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Copyright
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/legal/green-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                    Green Policy
                                 </Link>
                             </li>
                         </ul>
@@ -132,8 +204,8 @@ export default function Footer()
                         <p>
                             © {currentYear} Amity Web Solutions Limited. All rights reserved.
                         </p>
-                        <p className="flex items-center gap-1">
-                            Made with <span className="text-red-500">❤</span> by Amity Web Team
+                        <p className="text-center text-xs">
+                            Registered in England and Wales No. 05649124 | VAT No. 996 2856 51
                         </p>
                     </div>
                 </div>

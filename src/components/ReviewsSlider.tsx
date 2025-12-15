@@ -13,6 +13,7 @@ interface Review
     rating: number;
     text: string;
     company?: string;
+    avatar?: string;
 }
 
 /*----------------------------------------
@@ -80,6 +81,51 @@ function StarRating({ rating }: { rating: number })
 }
 
 /*----------------------------------------
+Avatar component - shows initial or image
+----------------------------------------*/
+function Avatar({ name, avatar }: { name: string; avatar?: string })
+{
+    /* Get initials from name */
+    const initials = name
+        .split(' ')
+        .map(word => word[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+    
+    /* Generate consistent colour based on name */
+    const colours = [
+        'bg-blue-500',
+        'bg-green-500',
+        'bg-purple-500',
+        'bg-orange-500',
+        'bg-pink-500',
+        'bg-teal-500',
+        'bg-indigo-500',
+        'bg-red-400',
+    ];
+    const colourIndex = name.length % colours.length;
+    const bgColour = colours[colourIndex];
+    
+    if (avatar)
+    {
+        return (
+            <img 
+                src={avatar} 
+                alt={name}
+                className="w-10 h-10 rounded-full object-cover"
+            />
+        );
+    }
+    
+    return (
+        <div className={`w-10 h-10 rounded-full ${bgColour} flex items-center justify-center text-white font-semibold text-sm`}>
+            {initials}
+        </div>
+    );
+}
+
+/*----------------------------------------
 Individual review card component
 ----------------------------------------*/
 function ReviewCard({ review }: { review: Review })
@@ -90,15 +136,18 @@ function ReviewCard({ review }: { review: Review })
             <p className="mt-4 text-[var(--foreground)] leading-relaxed flex-grow">
                 &ldquo;{review.text}&rdquo;
             </p>
-            <div className="mt-4 pt-4 border-t border-[var(--border)]">
-                <p className="font-semibold text-[var(--foreground)]">
-                    {review.author}
-                </p>
-                {review.company && (
-                    <p className="text-sm text-[var(--muted)]">
-                        {review.company}
+            <div className="mt-4 pt-4 border-t border-[var(--border)] flex items-center gap-3">
+                <Avatar name={review.author} avatar={review.avatar} />
+                <div>
+                    <p className="font-semibold text-[var(--foreground)]">
+                        {review.author}
                     </p>
-                )}
+                    {review.company && (
+                        <p className="text-sm text-[var(--muted)]">
+                            {review.company}
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     );

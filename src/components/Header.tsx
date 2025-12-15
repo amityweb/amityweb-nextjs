@@ -3,48 +3,91 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { services } from '@/data/services';
 
 /*----------------------------------------
-Header component with clean navigation
+Header component with dropdown navigation
 ----------------------------------------*/
 export default function Header()
 {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    const navLinks = [
-        { href: '/services', label: 'Services' },
-        { href: '/portfolio', label: 'Portfolio' },
-        { href: '/about', label: 'About' },
-        { href: '/contact', label: 'Contact' },
-    ];
+    const [servicesOpen, setServicesOpen] = useState(false);
 
     return (
-        <header className="bg-white border-b border-[var(--border)]">
+        <header className="bg-white border-b border-[var(--border)] relative z-50">
             <div className="container">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
-                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                            </svg>
-                        </div>
-                        <span className="text-xl font-bold text-[var(--foreground)]">
-                            Amity<span className="text-[var(--primary)]">Web</span>
-                        </span>
+                        <Image
+                            src="/logo.svg"
+                            alt="Amity Web Solutions"
+                            width={140}
+                            height={32}
+                            className="h-8 w-auto"
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
+                        {/* Services Dropdown */}
+                        <div 
+                            className="relative"
+                            onMouseEnter={() => setServicesOpen(true)}
+                            onMouseLeave={() => setServicesOpen(false)}
+                        >
                             <Link
-                                key={link.href}
-                                href={link.href}
-                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
+                                href="/services"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors flex items-center gap-1"
                             >
-                                {link.label}
+                                Services
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
                             </Link>
-                        ))}
+                            
+                            {/* Dropdown Menu */}
+                            {servicesOpen && (
+                                <div className="absolute top-full left-0 pt-2">
+                                    <div className="bg-white rounded-xl shadow-lg border border-[var(--border)] py-2 min-w-[220px]">
+                                        {services.map((service) => (
+                                            <Link
+                                                key={service.slug}
+                                                href={`/services/${service.slug}`}
+                                                className="block px-4 py-2 text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+                                            >
+                                                {service.title}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <Link
+                            href="/portfolio"
+                            className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
+                        >
+                            Portfolio
+                        </Link>
+                        <Link
+                            href="/blog"
+                            className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
+                        >
+                            Blog
+                        </Link>
+                        <Link
+                            href="/about"
+                            className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
+                        >
+                            About
+                        </Link>
+                        <Link
+                            href="/contact"
+                            className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
+                        >
+                            Contact
+                        </Link>
                         <Link href="/contact" className="btn-primary py-2 px-5">
                             Get a Quote
                         </Link>
@@ -63,19 +106,9 @@ export default function Header()
                             viewBox="0 0 24 24"
                         >
                             {mobileMenuOpen ? (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             ) : (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                             )}
                         </svg>
                     </button>
@@ -85,16 +118,54 @@ export default function Header()
                 {mobileMenuOpen && (
                     <nav className="md:hidden py-4 border-t border-[var(--border)]">
                         <div className="flex flex-col gap-1">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2 rounded-lg hover:bg-[var(--background-alt)]"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
+                            <Link
+                                href="/services"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Services
+                            </Link>
+                            {/* Mobile service sub-links */}
+                            <div className="pl-4 flex flex-col gap-1">
+                                {services.map((service) => (
+                                    <Link
+                                        key={service.slug}
+                                        href={`/services/${service.slug}`}
+                                        className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] py-2 px-2"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        {service.title}
+                                    </Link>
+                                ))}
+                            </div>
+                            <Link
+                                href="/portfolio"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Portfolio
+                            </Link>
+                            <Link
+                                href="/blog"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Blog
+                            </Link>
+                            <Link
+                                href="/about"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                About
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium py-3 px-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Contact
+                            </Link>
                             <Link
                                 href="/contact"
                                 className="btn-primary text-center mt-3"
