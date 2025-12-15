@@ -25,9 +25,6 @@ interface TurnstileResponse
     hostname?: string;
 }
 
-/* Initialize Resend client */
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 /*----------------------------------------
 Verify Cloudflare Turnstile token
 ----------------------------------------*/
@@ -137,6 +134,9 @@ export async function POST(request: NextRequest)
                 { status: 500 }
             );
         }
+
+        /* Initialize Resend client */
+        const resend = new Resend(process.env.RESEND_API_KEY);
 
         /* Escape user input for HTML email */
         const safeName = escapeHtml(data.name);
