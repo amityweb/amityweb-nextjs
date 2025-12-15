@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 /*----------------------------------------
 Contact form API route
-Handles form submissions and sends email
+Handles form submissions with Turnstile
+verification and sends email
 ----------------------------------------*/
 
 interface ContactFormData
@@ -12,6 +13,57 @@ interface ContactFormData
     phone?: string;
     company?: string;
     message: string;
+    turnstileToken: string;
+}
+
+interface TurnstileResponse
+{
+    success: boolean;
+    'error-codes'?: string[];
+    challenge_ts?: string;
+    hostname?: string;
+}
+
+/*----------------------------------------
+Verify Cloudflare Turnstile token
+----------------------------------------*/
+async function verifyTurnstile(token: string): Promise<boolean>
+{
+    const secretKey = process.env.TURNSTILE_SECRET_KEY;
+    
+    if (!secretKey)
+    {
+        console.error('TURNSTILE_SECRET_KEY not configured');
+        return false;
+    }
+
+    try
+    {
+        const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                secret: secretKey,
+                response: token,
+            }),
+        });
+
+        const data: TurnstileResponse = await response.json();
+        
+        if (!data.success)
+        {
+            console.error('Turnstile verification failed:', data['error-codes']);
+        }
+        
+        return data.success;
+    }
+    catch (error)
+    {
+        console.error('Turnstile verification error:', error);
+        return false;
+    }
 }
 
 export async function POST(request: NextRequest)
@@ -35,6 +87,24 @@ export async function POST(request: NextRequest)
         {
             return NextResponse.json(
                 { error: 'Invalid email address' },
+                { status: 400 }
+            );
+        }
+
+        /* Verify Turnstile token */
+        if (!data.turnstileToken)
+        {
+            return NextResponse.json(
+                { error: 'Security verification required' },
+                { status: 400 }
+            );
+        }
+
+        const isValidToken = await verifyTurnstile(data.turnstileToken);
+        if (!isValidToken)
+        {
+            return NextResponse.json(
+                { error: 'Security verification failed. Please try again.' },
                 { status: 400 }
             );
         }
@@ -69,7 +139,13 @@ export async function POST(request: NextRequest)
         */
 
         /* For now, log the submission (remove in production) */
-        console.log('Contact form submission:', data);
+        console.log('Contact form submission:', {
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            company: data.company,
+            message: data.message,
+        });
 
         /* Return success response */
         return NextResponse.json(
