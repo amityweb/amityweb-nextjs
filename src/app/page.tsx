@@ -158,6 +158,30 @@ export default function Home()
                 </div>
             </section>
 
+            {/* Powered by Modern Technologies */}
+            <section className="py-16 bg-white">
+                <div className="container">
+                    <div className="text-center mb-10">
+                        <h2 className="section-title">Powered by Modern Technologies</h2>
+                        <p className="section-subtitle mx-auto">
+                            We use industry-leading technologies and frameworks to build fast, 
+                            secure, and scalable websites.
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+                        <Image src="/tech-logos/wordpress.webp" alt="WordPress" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/woocommerce.webp" alt="WooCommerce" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/laravel.webp" alt="Laravel" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/craft-cms.webp" alt="Craft CMS" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/php.webp" alt="PHP" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/mysql.webp" alt="MySQL" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/jquery.webp" alt="jQuery" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/codeigniter.webp" alt="CodeIgniter" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                        <Image src="/tech-logos/expressionengine.webp" alt="ExpressionEngine" width={120} height={60} className="h-10 md:h-12 w-auto object-contain" />
+                    </div>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className="py-20" style={{ backgroundColor: '#e94e1a' }}>
                 <div className="container">
