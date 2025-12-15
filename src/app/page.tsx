@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import ReviewsSlider from '@/components/ReviewsSlider';
+import AnimatedHero from '@/components/AnimatedHero';
 import { services } from '@/data/services';
 import { getServiceIcon } from '@/components/ServiceIcons';
 
@@ -15,10 +16,7 @@ export default function Home()
             <section className="bg-gradient-subtle py-20 md:py-24">
                 <div className="container">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h1 className="hero-title mb-6">
-                            We <span className="text-[var(--primary)]">Design</span>, <span className="text-[var(--primary)]">Build</span>, and
-                            <br /><span className="text-[var(--primary)]">Nurture</span> Digital Experiences.
-                        </h1>
+                        <AnimatedHero />
                         <p className="text-xl text-[var(--muted)] mb-10 max-w-2xl mx-auto">
                             Amity Web is your full-cycle digital partner. From initial concept to 
                             hosting and maintenance, we handle the technical details so you can 

@@ -412,3 +412,86 @@ a:hover {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+
+/* Animated Hero Keyframes */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes design-reveal {
+    0% { transform: scale(0.9) rotate(-2deg); opacity: 0; }
+    50% { transform: scale(1.05) rotate(1deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes build-reveal {
+    0% { transform: translateY(10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes build-underline {
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+
+@keyframes nurture-reveal {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes sparkle-1 {
+    0%, 100% { opacity: 0; transform: scale(0) translate(0, 0); }
+    50% { opacity: 1; transform: scale(1) translate(-3px, -5px); }
+}
+
+@keyframes sparkle-2 {
+    0%, 100% { opacity: 0; transform: scale(0) translate(0, 0); }
+    40% { opacity: 1; transform: scale(1) translate(3px, 5px); }
+    80% { opacity: 0; transform: scale(0.5) translate(5px, 8px); }
+}
+
+@keyframes sparkle-3 {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    30% { opacity: 0; }
+    60% { opacity: 1; transform: scale(1.2); }
+    90% { opacity: 0; transform: scale(0.5); }
+}
+
+.animate-blink {
+    animation: blink 0.8s infinite;
+}
+
+.animate-design-reveal {
+    animation: design-reveal 0.6s ease-out forwards;
+}
+
+.animate-build-reveal {
+    animation: build-reveal 0.5s ease-out forwards;
+}
+
+.animate-build-underline {
+    animation: build-underline 0.4s ease-out 0.2s forwards;
+    width: 0;
+}
+
+.animate-nurture-reveal {
+    animation: nurture-reveal 0.7s ease-out forwards;
+}
+
+.animate-sparkle-1 {
+    animation: sparkle-1 2s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+.animate-sparkle-2 {
+    animation: sparkle-2 2.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.animate-sparkle-3 {
+    animation: sparkle-3 3s ease-in-out infinite;
+    animation-delay: 0.8s;
+}

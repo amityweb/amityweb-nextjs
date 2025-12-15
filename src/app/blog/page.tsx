@@ -93,7 +93,6 @@ export default async function BlogPage(
                                 imageAlt={post.title}
                                 title={post.title}
                                 description={post.excerpt}
-                                tags={post.tags}
                                 meta={
                                     <div className="flex items-center gap-3">
                                         {post.category && (
