@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -38,6 +39,7 @@ export default function RootLayout({
 {
     return (
         <html lang="en">
+            <GoogleAnalytics />
             <body className={`${inter.variable} antialiased`}>
                 <Header />
                 <main>{children}</main>

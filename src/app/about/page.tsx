@@ -197,8 +197,17 @@ export default function AboutPage()
                 <div className="container">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="order-2 lg:order-1">
-                            <div className="bg-gray-200 rounded-xl aspect-video flex items-center justify-center">
-                                <span className="text-[var(--muted)]">Office Location</span>
+                            <div className="rounded-xl overflow-hidden aspect-video">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12425.587202814757!2d-3.217865225863529!3d51.57132576915343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486e1ed3a6c01e19%3A0x725e07fdd329fa8e!2sAmity%20Web!5e0!3m2!1sen!2suk!4v1765811430355!5m2!1sen!2suk" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy" 
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Amity Web Solutions Location"
+                                />
                             </div>
                         </div>
                         <div className="order-1 lg:order-2">

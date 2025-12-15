@@ -1,0 +1,21 @@
+# Laurie
+lozcozard.duia.eu
+laptop.lozcozard.duia.eu
+phone.lozcozard.duia.eu
+
+# Kiran - Home
+kirankerai91.no-ip.biz
+
+# Client - SPF Group
+office.bristolgreenhosting.co.uk # Graham
+garyhome.flow.duia.eu
+flow.duia.eu
+
+# Zoneedit
+monitor.zoneedit.com
+node1.failoverdns.com
+node2.failoverdns.com
+node3.failoverdns.com
+node4.failoverdns.com
+node5.failoverdns.com
+node6.failoverdns.com
