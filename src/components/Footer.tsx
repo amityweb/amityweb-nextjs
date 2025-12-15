@@ -126,8 +126,8 @@ export default function Footer()
             </div>
 
             {/* Bottom Bar */}
-            <div className="border-t border-[var(--border)] mt-16">
-                <div className="container pt-8">
+            <div className="border-t border-[var(--border)] mt-16 pt-8">
+                <div className="container pb-0">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--muted)]">
                         <p>
                             © {currentYear} Amity Web Solutions Limited. All rights reserved.

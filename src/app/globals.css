@@ -39,7 +39,6 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--foreground);
     line-height: 1.2;
     font-weight: 700;
 }
@@ -183,7 +182,8 @@ a:hover {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    padding: 0.5rem 0;
+    padding: 0;
+    margin-bottom: 0.625rem;
 }
 
 .check-list li svg {
@@ -192,4 +192,52 @@ a:hover {
     color: var(--primary);
     flex-shrink: 0;
     margin-top: 0.125rem;
+}
+/* Swiper custom styles */
+.reviews-slider .swiper {
+    padding-bottom: 3rem;
+}
+
+.reviews-slider .swiper-slide {
+    height: auto;
+}
+
+.reviews-slider .swiper-button-prev,
+.reviews-slider .swiper-button-next {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-slider .swiper-button-prev:hover,
+.reviews-slider .swiper-button-next:hover {
+    border-color: var(--primary);
+}
+
+.reviews-slider .swiper-button-prev::after,
+.reviews-slider .swiper-button-next::after {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.reviews-slider .swiper-button-prev:hover::after,
+.reviews-slider .swiper-button-next:hover::after {
+    color: var(--primary);
+}
+
+.reviews-slider .swiper-pagination-bullet {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--border);
+    opacity: 1;
+}
+
+.reviews-slider .swiper-pagination-bullet-active {
+    width: 1.5rem;
+    border-radius: 9999px;
+    background: var(--primary);
 }

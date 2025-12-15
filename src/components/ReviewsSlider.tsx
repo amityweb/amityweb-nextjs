@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 /*----------------------------------------
 Review interface
@@ -23,7 +24,7 @@ const reviews: Review[] = [
         author: "Howard Stapleton",
         company: "Compound Security",
         rating: 5,
-        text: "We are the inventors of 'the Mosquito Anti-Loitering Device' which we sell worldwide via our website. Since moving to Amity Web Solutions over 10 years ago we have experienced a relationship and understanding of our business from their team that we had never experienced before. Nothing is too much trouble.",
+        text: "We are the inventors of 'the Mosquito Anti-Loitering Device' which we sell worldwide via our website. Since moving to Amity Web Solutions over 10 years ago we have experienced a relationship and understanding of our business from their team that we had never experienced before.",
     },
     {
         id: 2,
@@ -49,6 +50,12 @@ const reviews: Review[] = [
         rating: 5,
         text: "Amity Web Solutions have hosted my website since I started my business in 2005. They provide an extremely reliable and very prompt service. The ongoing assistance and support is exceptional.",
     },
+    {
+        id: 6,
+        author: "David R",
+        rating: 5,
+        text: "Great job on our new website. The team at Amity Web Solutions were professional, responsive and delivered exactly what we needed. Ongoing support has been fantastic.",
+    },
 ];
 
 /*----------------------------------------
@@ -73,34 +80,37 @@ function StarRating({ rating }: { rating: number })
 }
 
 /*----------------------------------------
-Reviews slider component
+Individual review card component
+----------------------------------------*/
+function ReviewCard({ review }: { review: Review })
+{
+    return (
+        <div className="bg-white border border-[var(--border)] rounded-2xl p-6 h-full flex flex-col">
+            <StarRating rating={review.rating} />
+            <p className="mt-4 text-[var(--foreground)] leading-relaxed flex-grow">
+                &ldquo;{review.text}&rdquo;
+            </p>
+            <div className="mt-4 pt-4 border-t border-[var(--border)]">
+                <p className="font-semibold text-[var(--foreground)]">
+                    {review.author}
+                </p>
+                {review.company && (
+                    <p className="text-sm text-[var(--muted)]">
+                        {review.company}
+                    </p>
+                )}
+            </div>
+        </div>
+    );
+}
+
+/*----------------------------------------
+Reviews slider component using Swiper
 ----------------------------------------*/
 export default function ReviewsSlider()
 {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-    useEffect(() =>
-    {
-        if (!isAutoPlaying) return;
-
-        const timer = setInterval(() =>
-        {
-            setCurrentIndex((prev) => (prev + 1) % reviews.length);
-        }, 6000);
-
-        return () => clearInterval(timer);
-    }, [isAutoPlaying]);
-
-    const goToSlide = (index: number) =>
-    {
-        setCurrentIndex(index);
-        setIsAutoPlaying(false);
-        setTimeout(() => setIsAutoPlaying(true), 10000);
-    };
-
     return (
-        <div className="max-w-3xl mx-auto">
+        <div className="reviews-slider">
             {/* Google Rating */}
             <div className="flex items-center justify-center gap-3 mb-10">
                 <svg className="w-6 h-6" viewBox="0 0 24 24">
@@ -115,39 +125,34 @@ export default function ReviewsSlider()
                 </div>
             </div>
 
-            {/* Review Card */}
-            <div className="bg-white border border-[var(--border)] rounded-2xl p-8 md:p-10 text-center">
-                <StarRating rating={reviews[currentIndex].rating} />
-                <p className="mt-6 text-lg text-[var(--foreground)] leading-relaxed">
-                    &ldquo;{reviews[currentIndex].text}&rdquo;
-                </p>
-                <div className="mt-6">
-                    <p className="font-semibold text-[var(--foreground)]">
-                        {reviews[currentIndex].author}
-                    </p>
-                    {reviews[currentIndex].company && (
-                        <p className="text-sm text-[var(--muted)]">
-                            {reviews[currentIndex].company}
-                        </p>
-                    )}
-                </div>
-            </div>
-
-            {/* Dots Navigation */}
-            <div className="flex justify-center gap-2 mt-8">
-                {reviews.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                            index === currentIndex
-                                ? 'bg-[var(--primary)] w-6'
-                                : 'bg-gray-300 hover:bg-gray-400'
-                        }`}
-                        aria-label={`Go to review ${index + 1}`}
-                    />
+            {/* Swiper Slider */}
+            <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={24}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                autoplay={{
+                    delay: 5000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                }}
+                breakpoints={{
+                    640: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                }}
+                className="pb-12"
+            >
+                {reviews.map((review) => (
+                    <SwiperSlide key={review.id} className="h-auto">
+                        <ReviewCard review={review} />
+                    </SwiperSlide>
                 ))}
-            </div>
+            </Swiper>
         </div>
     );
 }
