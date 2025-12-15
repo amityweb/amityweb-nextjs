@@ -10,7 +10,7 @@ export default function Home()
     return (
         <>
             {/* Hero Section */}
-            <section className="bg-gradient-subtle py-20 md:py-28">
+            <section className="bg-gradient-subtle py-20 md:py-24">
                 <div className="container">
                     <div className="max-w-4xl mx-auto text-center">
                         <h1 className="hero-title mb-6">

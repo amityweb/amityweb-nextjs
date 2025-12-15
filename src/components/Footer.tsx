@@ -9,7 +9,7 @@ export default function Footer()
 
     return (
         <footer className="bg-white border-t border-[var(--border)]">
-            <div className="container py-16">
+            <div className="container py-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Company Info */}
                     <div>
@@ -127,7 +127,7 @@ export default function Footer()
 
             {/* Bottom Bar */}
             <div className="border-t border-[var(--border)]">
-                <div className="container py-6">
+                <div className="container py-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--muted)]">
                         <p>
                             © {currentYear} Amity Web Solutions Limited. All rights reserved.
