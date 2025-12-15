@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 /*----------------------------------------
 Contact form API route
 Handles form submissions with Turnstile
-verification and sends email
+verification and sends email via Resend
 ----------------------------------------*/
 
 interface ContactFormData
@@ -23,6 +24,9 @@ interface TurnstileResponse
     challenge_ts?: string;
     hostname?: string;
 }
+
+/* Initialize Resend client */
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /*----------------------------------------
 Verify Cloudflare Turnstile token
@@ -64,6 +68,21 @@ async function verifyTurnstile(token: string): Promise<boolean>
         console.error('Turnstile verification error:', error);
         return false;
     }
+}
+
+/*----------------------------------------
+Escape HTML to prevent XSS in emails
+----------------------------------------*/
+function escapeHtml(text: string): string
+{
+    const htmlEntities: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, char => htmlEntities[char]);
 }
 
 export async function POST(request: NextRequest)
@@ -109,43 +128,75 @@ export async function POST(request: NextRequest)
             );
         }
 
-        /*
-        TODO: Implement email sending
-        Options:
-        1. Nodemailer with SMTP
-        2. SendGrid
-        3. Resend
-        4. AWS SES
-        
-        Example with Resend (recommended for Vercel):
-        
-        import { Resend } from 'resend';
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        
-        await resend.emails.send({
-            from: 'website@amityweb.co.uk',
-            to: 'info@amityweb.co.uk',
-            subject: `New Contact Form Submission from ${data.name}`,
+        /* Check Resend API key is configured */
+        if (!process.env.RESEND_API_KEY)
+        {
+            console.error('RESEND_API_KEY not configured');
+            return NextResponse.json(
+                { error: 'Email service not configured' },
+                { status: 500 }
+            );
+        }
+
+        /* Escape user input for HTML email */
+        const safeName = escapeHtml(data.name);
+        const safeEmail = escapeHtml(data.email);
+        const safePhone = data.phone ? escapeHtml(data.phone) : 'Not provided';
+        const safeCompany = data.company ? escapeHtml(data.company) : 'Not provided';
+        const safeMessage = escapeHtml(data.message).replace(/\n/g, '<br>');
+
+        /* Send email via Resend */
+        const { error: emailError } = await resend.emails.send({
+            from: 'Amity Web Website <website@amityweb.co.uk>',
+            to: ['info@amityweb.co.uk'],
+            replyTo: data.email,
+            subject: `New Contact Form Submission from ${safeName}`,
             html: `
-                <h2>New Contact Form Submission</h2>
-                <p><strong>Name:</strong> ${data.name}</p>
-                <p><strong>Email:</strong> ${data.email}</p>
-                <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
-                <p><strong>Company:</strong> ${data.company || 'Not provided'}</p>
-                <p><strong>Message:</strong></p>
-                <p>${data.message}</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #333; border-bottom: 2px solid #0066cc; padding-bottom: 10px;">
+                        New Contact Form Submission
+                    </h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; width: 120px;">Name:</td>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${safeName}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <a href="mailto:${safeEmail}">${safeEmail}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${safePhone}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">Company:</td>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${safeCompany}</td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 20px;">
+                        <h3 style="color: #333; margin-bottom: 10px;">Message:</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; line-height: 1.6;">
+                            ${safeMessage}
+                        </div>
+                    </div>
+                    <p style="margin-top: 30px; font-size: 12px; color: #666;">
+                        This message was sent from the contact form on amityweb.co.uk
+                    </p>
+                </div>
             `,
         });
-        */
 
-        /* For now, log the submission (remove in production) */
-        console.log('Contact form submission:', {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            company: data.company,
-            message: data.message,
-        });
+        if (emailError)
+        {
+            console.error('Resend email error:', emailError);
+            return NextResponse.json(
+                { error: 'Failed to send email. Please try again.' },
+                { status: 500 }
+            );
+        }
 
         /* Return success response */
         return NextResponse.json(
