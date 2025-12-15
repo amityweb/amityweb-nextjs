@@ -80,13 +80,13 @@ export default function Home()
                 <div className="container">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="relative">
-                            {/* Laurence Cope photo */}
+                            {/* Professional team collaboration photo */}
                             <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--border)]">
                                 <Image
-                                    src="/laurence-cope.png"
-                                    alt="Laurence Cope - Founder of Amity Web Solutions"
-                                    width={1277}
-                                    height={980}
+                                    src="/why-amity-team.png"
+                                    alt="Professional web development team collaborating in a modern office"
+                                    width={1280}
+                                    height={896}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
