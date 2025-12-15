@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#102c40"/>
+  <circle cx="100" cy="80" r="50" fill="#e94e1a"/>
+  <text x="100" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">CE</text>
+  <text x="100" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">CYBER</text>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">ESSENTIALS</text>
+</svg>
