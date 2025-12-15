@@ -146,7 +146,7 @@ export default function Home()
 
             {/* Google Reviews */}
             <section className="section">
-                <div className="container">
+                <div className="container" style={{ maxWidth: '1600px' }}>
                     <div className="text-center mb-14">
                         <h2 className="section-title">What Our Clients Say</h2>
                         <p className="section-subtitle mx-auto">
