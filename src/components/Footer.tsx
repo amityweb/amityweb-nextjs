@@ -8,8 +8,8 @@ export default function Footer()
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-white border-t border-[var(--border)]">
-            <div className="container py-20">
+        <footer className="bg-white border-t border-[var(--border)] pt-20 pb-8">
+            <div className="container">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Company Info */}
                     <div>
@@ -126,8 +126,8 @@ export default function Footer()
             </div>
 
             {/* Bottom Bar */}
-            <div className="border-t border-[var(--border)]">
-                <div className="container py-8">
+            <div className="border-t border-[var(--border)] mt-16">
+                <div className="container pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--muted)]">
                         <p>
                             © {currentYear} Amity Web Solutions Limited. All rights reserved.
