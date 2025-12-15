@@ -26,15 +26,15 @@ export default function sitemap(): MetadataRoute.Sitemap
 
     /* Legal pages */
     const legalPages = [
-        '/legal/privacy-policy',
-        '/legal/cookie-policy',
-        '/legal/acceptable-use-policy',
-        '/legal/security-policy',
-        '/legal/disclaimer',
-        '/legal/copyright',
-        '/legal/customer-complaints-process',
-        '/legal/data-breach-policy',
-        '/legal/green-policy',
+        '/privacy-policy',
+        '/cookie-policy',
+        '/acceptable-use-policy',
+        '/security-policy',
+        '/disclaimer',
+        '/copyright',
+        '/customer-complaints-process',
+        '/data-breach-policy',
+        '/green-policy',
     ];
 
     /* Build sitemap entries */

@@ -86,7 +86,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                                 {service.fullDescription}
                             </p>
                             
-                            <h3 className="text-xl font-bold mb-4">What&apos;s Included</h3>
+                            <h3 className="text-xl font-bold mb-4">Services Offered</h3>
                             <ul className="list-disc list-inside space-y-2 text-[var(--muted)] mb-8">
                                 {service.features.map((feature, index) => (
                                     <li key={index}>{feature}</li>

@@ -73,15 +73,15 @@ export default function SitemapPage()
 
                             <h2 className="text-xl font-bold mb-4 mt-8 text-[var(--primary)]">Legal</h2>
                             <ul className="space-y-2">
-                                <li><Link href="/legal/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Privacy Policy</Link></li>
-                                <li><Link href="/legal/cookie-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Cookie Policy</Link></li>
-                                <li><Link href="/legal/acceptable-use-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Acceptable Use Policy</Link></li>
-                                <li><Link href="/legal/security-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Security Policy</Link></li>
-                                <li><Link href="/legal/disclaimer" className="text-[var(--muted)] hover:text-[var(--primary)]">Disclaimer</Link></li>
-                                <li><Link href="/legal/copyright" className="text-[var(--muted)] hover:text-[var(--primary)]">Copyright</Link></li>
-                                <li><Link href="/legal/customer-complaints-process" className="text-[var(--muted)] hover:text-[var(--primary)]">Complaints Process</Link></li>
-                                <li><Link href="/legal/data-breach-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Data Breach Policy</Link></li>
-                                <li><Link href="/legal/green-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Green Policy</Link></li>
+                                <li><Link href="/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Privacy Policy</Link></li>
+                                <li><Link href="/cookie-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Cookie Policy</Link></li>
+                                <li><Link href="/acceptable-use-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Acceptable Use Policy</Link></li>
+                                <li><Link href="/security-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Security Policy</Link></li>
+                                <li><Link href="/disclaimer" className="text-[var(--muted)] hover:text-[var(--primary)]">Disclaimer</Link></li>
+                                <li><Link href="/copyright" className="text-[var(--muted)] hover:text-[var(--primary)]">Copyright</Link></li>
+                                <li><Link href="/customer-complaints-process" className="text-[var(--muted)] hover:text-[var(--primary)]">Complaints Process</Link></li>
+                                <li><Link href="/data-breach-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Data Breach Policy</Link></li>
+                                <li><Link href="/green-policy" className="text-[var(--muted)] hover:text-[var(--primary)]">Green Policy</Link></li>
                             </ul>
                         </div>
 

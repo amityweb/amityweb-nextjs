@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 /*----------------------------------------
 Footer component - Clean modern design
@@ -14,14 +15,13 @@ export default function Footer()
                     {/* Company Info */}
                     <div>
                         <Link href="/" className="flex items-center gap-2 mb-4">
-                            <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
-                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                            </div>
-                            <span className="text-xl font-bold text-[var(--foreground)]">
-                                Amity<span className="text-[var(--primary)]">Web</span>
-                            </span>
+                            <Image 
+                                src="/logo.svg" 
+                                alt="Amity Web Solutions Logo" 
+                                width={140} 
+                                height={31}
+                                className="h-auto w-auto max-w-[140px]"
+                            />
                         </Link>
                         <p className="text-[var(--muted)] mb-6">
                             Designing, building, and maintaining exceptional digital experiences 
@@ -108,12 +108,12 @@ export default function Footer()
                         <h3 className="font-semibold text-[var(--foreground)] mb-4">Legal</h3>
                         <ul className="footer-menu">
                             <li>
-                                <Link href="/legal/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/privacy-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Privacy Policy
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/legal/cookie-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/cookie-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Cookie Policy
                                 </Link>
                             </li>
@@ -123,27 +123,27 @@ export default function Footer()
                                 </a>
                             </li>
                             <li>
-                                <Link href="/legal/acceptable-use-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/acceptable-use-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Acceptable Use Policy
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/legal/security-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/security-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Security Policy
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/legal/disclaimer" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/disclaimer" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Disclaimer
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/legal/copyright" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/copyright" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Copyright
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/legal/green-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
+                                <Link href="/green-policy" className="text-[var(--muted)] hover:text-[var(--primary)] transition-colors">
                                     Green Policy
                                 </Link>
                             </li>

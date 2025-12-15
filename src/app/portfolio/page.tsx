@@ -51,7 +51,7 @@ export default async function PortfolioPage(
                             href="/portfolio"
                             className={`px-4 py-2 text-sm font-medium transition-colors ${
                                 !selectedTag 
-                                    ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                    ? 'text-[var(--foreground)] border-b-2 border-[var(--primary)]' 
                                     : 'text-[var(--muted)] hover:text-[var(--foreground)]'
                             }`}
                         >
@@ -63,7 +63,7 @@ export default async function PortfolioPage(
                                 href={`/portfolio?tag=${encodeURIComponent(tech)}`}
                                 className={`px-4 py-2 text-sm font-medium transition-colors ${
                                     selectedTag === tech 
-                                        ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                        ? 'text-[var(--foreground)] border-b-2 border-[var(--primary)]' 
                                         : 'text-[var(--muted)] hover:text-[var(--foreground)]'
                                 }`}
                             >

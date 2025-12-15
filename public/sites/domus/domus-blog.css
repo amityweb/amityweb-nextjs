@@ -1,0 +1,120 @@
+/**** FONT ****/
+body,p,li,h1,h2,h3,h4,h5,h6,a,a.button,input,select,textarea
+{
+	font-family: 'mukta', arial, sans-serif;
+	font-weight: 100;
+}
+
+/**** Layout ****/
+.content .hero_info
+{
+	display: none;
+}
+
+.content .container
+{
+	padding: 0;
+	width: 100%;
+}
+	.content .content_typography
+	{
+		padding: 0;
+	}
+		.content .field-item
+		{
+			font-size: 1.2em;
+		}
+		
+.blog-page
+{
+	/*padding-bottom: 3em;*/
+}	
+	.content-inner
+	{
+		margin: auto;
+		max-width: 750px;
+		width: 95%;
+	}
+		.content-inner:after
+		{
+			content: "";
+			clear: both;
+			display: table;
+		}
+	
+	.header-image img
+	{
+		width: 100%;
+	}
+	
+	/**** Blog listings page ****/
+	.view-header,
+	.view-content
+	{
+		max-width: 700px;
+		margin: auto;
+		width: 95%;
+	}
+		.view-header h1
+		{
+			margin: 0 0 0.5em;
+		}
+		
+		.view-content .views-row
+		{
+			margin-bottom: 1.5em;
+		}
+			.view-content .views-row .views-field-title
+			{
+				font-size: 1.5em;
+				margin-bottom: 0.4em;
+			}
+			
+/**** Heading ****/
+h1, .h1
+{
+	color: #D2232B;
+	font-size: 3em;
+	font-weight: normal;
+}	
+	.underline-heading:after
+	{
+		content: "";
+		width: 300px;
+		height: 1px;
+		background: #000000;
+		display: block;
+		margin: 10px auto 0 auto;
+	}
+
+/**** Content ****/
+.meta-info,
+.meta-info p
+{
+	color: #888888;
+	display: inline-block;
+}
+	.meta-info:before
+	{
+		content: "";
+		background: url('http://www.domusventilation.co.uk/sites/default/files/Blog-icon.png') no-repeat;
+		display: inline-block;
+		height: 15px;
+		margin-right: 0.2em;
+		vertical-align: text-top;
+		width: 15px;
+	}
+	
+
+/**** Social Share ****/
+.domus-social-share
+{
+	padding-bottom: 2em;
+	text-align: center;
+}
+	.domus-social-share a
+	{
+		display: inline-block;
+		float: none;
+	}
+

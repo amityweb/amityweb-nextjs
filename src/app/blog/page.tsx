@@ -58,7 +58,7 @@ export default async function BlogPage(
                             href="/blog"
                             className={`px-4 py-2 text-sm font-medium transition-colors ${
                                 !selectedCategory 
-                                    ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                    ? 'text-[var(--foreground)] border-b-2 border-[var(--primary)]' 
                                     : 'text-[var(--muted)] hover:text-[var(--foreground)]'
                             }`}
                         >
@@ -70,7 +70,7 @@ export default async function BlogPage(
                                 href={`/blog?category=${encodeURIComponent(category)}`}
                                 className={`px-4 py-2 text-sm font-medium transition-colors ${
                                     selectedCategory === category 
-                                        ? 'text-[var(--foreground)] underline underline-offset-4' 
+                                        ? 'text-[var(--foreground)] border-b-2 border-[var(--primary)]' 
                                         : 'text-[var(--muted)] hover:text-[var(--foreground)]'
                                 }`}
                             >
@@ -121,7 +121,7 @@ export default async function BlogPage(
                             {currentPage > 1 && (
                                 <Link 
                                     href={`/blog?page=${currentPage - 1}${selectedCategory ? `&category=${encodeURIComponent(selectedCategory)}` : ''}`}
-                                    className="px-4 py-2 rounded-lg bg-[var(--surface)] hover:bg-[var(--border)] transition-colors"
+                                    className="px-4 py-2 rounded-lg bg-[var(--primary)] text-white hover:bg-[var(--primary-dark)] transition-colors"
                                 >
                                     Previous
                                 </Link>
@@ -142,7 +142,7 @@ export default async function BlogPage(
                                                 className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
                                                     page === currentPage
                                                         ? 'bg-[var(--primary)] text-white'
-                                                        : 'bg-[var(--surface)] hover:bg-[var(--border)]'
+                                                        : 'bg-[var(--primary)] text-white hover:bg-[var(--primary-dark)]'
                                                 }`}
                                             >
                                                 {page}
@@ -161,7 +161,7 @@ export default async function BlogPage(
                             {currentPage < totalPages && (
                                 <Link 
                                     href={`/blog?page=${currentPage + 1}${selectedCategory ? `&category=${encodeURIComponent(selectedCategory)}` : ''}`}
-                                    className="px-4 py-2 rounded-lg bg-[var(--surface)] hover:bg-[var(--border)] transition-colors"
+                                    className="px-4 py-2 rounded-lg bg-[var(--primary)] text-white hover:bg-[var(--primary-dark)] transition-colors"
                                 >
                                     Next
                                 </Link>

@@ -1,0 +1,428 @@
+name: Claude Fix Issues
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+
+# Ensures only 1 workflow runs at a time
+concurrency:
+  group: claude-fixes
+  cancel-in-progress: false
+
+jobs:
+  claude-fix:
+    if: |
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude'))) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Acknowledge issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const messages = [
+              "🤖 Looking into this now...",
+              "🔍 On it! Let me take a look...",
+              "👀 Checking this out now...",
+              "🛠️ Let me dig into this...",
+              "⚡ Got it! Analyzing the issue...",
+              "🧐 Interesting! Let me investigate...",
+              "🚀 On the case! Give me a moment...",
+              "💡 Let me see what I can do here...",
+              "🔧 Rolling up my sleeves... let's fix this!",
+              "📋 Reading through this now...",
+              "🎯 Challenge accepted! Looking into it...",
+              "⏳ Give me a sec, I'm on it...",
+              "🤔 Hmm, let me think about this...",
+              "👨‍💻 Diving into the code now...",
+              "🔬 Analyzing... please hold...",
+              "✨ Let me work some magic here...",
+              "🏃 Running to check this out...",
+              "📝 Taking notes and investigating...",
+              "🎪 Alright, let's see what we've got here...",
+              "🌟 On it like a bonnet! Just a moment...",
+              "🧑‍🔧 Time to put on my thinking cap...",
+              "🔎 Investigating... stand by...",
+              "💪 Let's tackle this together...",
+              "🎬 Action! Checking this out now...",
+              "☕ Grabbing my coffee and getting to work..."
+            ];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: randomMessage
+            })
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get issue details
+        id: issue-details
+        run: |
+          {
+            echo "title<<EOF"
+            echo "${{ github.event.issue.title }}"
+            echo "EOF"
+            echo "body<<EOF"
+            echo "${{ github.event.issue.body }}"
+            echo "EOF"
+            echo "issue_num=${{ github.event.issue.number }}"
+          } >> $GITHUB_OUTPUT
+
+      - name: Prepare repo context for Claude
+        id: repo-context
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+
+          # Read only relevant files - prioritize blade/php files
+          context = {}
+          total_size = 0
+          max_total_size = 150000  # 150KB max - reduced to prevent API timeouts
+
+          for root, dirs, files in os.walk('.'):
+              # Skip directories
+              dirs[:] = [d for d in dirs if d not in ['.git', 'node_modules', 'vendor', 'storage', '.github', 'bootstrap', 'config']]
+
+              for file in files:
+                  # Prioritize blade and php files
+                  if file.endswith(('.blade.php', '.php', '.js', '.css')):
+                      filepath = os.path.join(root, file).lstrip('./')
+
+                      # Skip migrations, cache, config files
+                      if any(x in filepath for x in ['migrations/', 'cache/', 'compiled/', 'config/', 'tests/', 'bootstrap/']):
+                          continue
+
+                      try:
+                          with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                              content = f.read()
+
+                              # Limit individual file size
+                              if len(content) < 15000 and total_size + len(content) < max_total_size:
+                                  context[filepath] = content
+                                  total_size += len(content)
+                      except:
+                          pass
+
+          # Save as JSON for easy access
+          with open('/tmp/repo_context.json', 'w') as f:
+              json.dump(context, f)
+
+          print(f"Loaded {len(context)} files ({total_size} bytes)")
+          EOF
+
+      - name: Call Claude API
+        id: claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import urllib.request
+          import urllib.error
+          import time
+          import sys
+          import traceback
+
+          # Ensure error directory exists
+          os.makedirs('/tmp', exist_ok=True)
+
+          try:
+              title = os.environ.get('ISSUE_TITLE', '')
+              body = os.environ.get('ISSUE_BODY', '')
+              api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+
+              if not api_key:
+                  raise Exception("ANTHROPIC_API_KEY is not set")
+
+              # Load repo context
+              if not os.path.exists('/tmp/repo_context.json'):
+                  raise Exception("Repo context file not found")
+                  
+              with open('/tmp/repo_context.json', 'r') as f:
+                  repo_files = json.load(f)
+
+              # Build file context string
+              file_context = ""
+              for filepath, content in repo_files.items():
+                  file_context += f"\n\n=== {filepath} ===\n{content}"
+
+              prompt = "You are a web developer working on a GitHub issue.\n\n"
+              prompt += f"ISSUE TITLE: {title}\n\n"
+              prompt += f"ISSUE DESCRIPTION: {body}\n\n"
+              prompt += f"Here are the relevant files from the codebase:\n"
+              prompt += file_context
+              prompt += "\n\nYour task:\n"
+              prompt += "1. Understand the current codebase\n"
+              prompt += "2. Implement the changes described in the issue\n"
+              prompt += "3. Output ONLY the modified files in this exact format:\n\n"
+              prompt += "FILE: path/to/file.php\n"
+              prompt += "```\n"
+              prompt += "<complete updated file content here>\n"
+              prompt += "```\n\n"
+              prompt += "Important:\n"
+              prompt += "- Only output files you are actually modifying\n"
+              prompt += "- Include complete file content, not diffs\n"
+              prompt += "- Keep all existing code that doesn't need changes\n"
+              prompt += "- Wrap file contents in triple backticks\n"
+              prompt += "- Be precise and complete"
+
+              payload = {
+                  "model": "claude-sonnet-4-5-20250929",
+                  "max_tokens": 16384,
+                  "messages": [
+                      {"role": "user", "content": prompt}
+                  ]
+              }
+
+              req = urllib.request.Request(
+                  'https://api.anthropic.com/v1/messages',
+                  data=json.dumps(payload).encode(),
+                  headers={
+                      'x-api-key': api_key,
+                      'anthropic-version': '2023-06-01',
+                      'content-type': 'application/json'
+                  }
+              )
+
+              max_retries = 10
+              last_error = None
+
+              for attempt in range(max_retries):
+                  try:
+                      print(f"Attempt {attempt + 1}/{max_retries}...")
+                      with urllib.request.urlopen(req, timeout=300) as response:
+                          result = json.loads(response.read())
+                          text = result['content'][0]['text']
+
+                          with open('/tmp/claude_response.txt', 'w') as f:
+                              f.write(text)
+
+                          with open('/tmp/claude_status.txt', 'w') as f:
+                              f.write('success')
+
+                          print("Claude response saved successfully")
+                          sys.exit(0)
+
+                  except urllib.error.HTTPError as e:
+                      error_body = e.read().decode('utf-8') if e.fp else ''
+                      last_error = f"HTTP {e.code}: {e.reason}\n{error_body}"
+                      print(f"HTTP Error: {last_error}")
+
+                      if e.code == 429 or e.code >= 500:
+                          if attempt < max_retries - 1:
+                              wait_time = min(60 * (2 ** attempt), 600)
+                              print(f"Waiting {wait_time}s before retry...")
+                              time.sleep(wait_time)
+                              continue
+
+                      with open('/tmp/claude_error.txt', 'w') as f:
+                          f.write(last_error)
+                      with open('/tmp/claude_status.txt', 'w') as f:
+                          f.write('error')
+                      sys.exit(1)
+
+                  except Exception as e:
+                      last_error = f"Exception: {str(e)}\n{traceback.format_exc()}"
+                      print(last_error)
+                      
+                      if attempt < max_retries - 1:
+                          wait_time = min(60 * (2 ** attempt), 600)
+                          print(f"Waiting {wait_time}s before retry...")
+                          time.sleep(wait_time)
+                          continue
+                      
+                      with open('/tmp/claude_error.txt', 'w') as f:
+                          f.write(last_error)
+                      with open('/tmp/claude_status.txt', 'w') as f:
+                          f.write('error')
+                      sys.exit(1)
+
+              # Exhausted retries
+              error_msg = f"Failed after {max_retries} attempts. Last error: {last_error}"
+              print(error_msg)
+              with open('/tmp/claude_error.txt', 'w') as f:
+                  f.write(error_msg)
+              with open('/tmp/claude_status.txt', 'w') as f:
+                  f.write('error')
+              sys.exit(1)
+
+          except Exception as e:
+              error_msg = f"Fatal error: {str(e)}\n{traceback.format_exc()}"
+              print(error_msg)
+              with open('/tmp/claude_error.txt', 'w') as f:
+                  f.write(error_msg)
+              with open('/tmp/claude_status.txt', 'w') as f:
+                  f.write('error')
+              sys.exit(1)
+          EOF
+
+      - name: Comment error on issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let errorMsg = 'Unknown error occurred';
+            try {
+              errorMsg = fs.readFileSync('/tmp/claude_error.txt', 'utf8');
+            } catch (e) {
+              errorMsg = `Error file not found. Check workflow logs.`;
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `❌ **Claude API Error**\n\n\`\`\`\n${errorMsg}\n\`\`\`\n\nPlease check the workflow logs for more details.`
+            })
+
+      - name: Post Claude response as comment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let response = '';
+            try {
+              response = fs.readFileSync('/tmp/claude_response.txt', 'utf8');
+              // Truncate if too long for GitHub comment (max ~65536 chars)
+              if (response.length > 60000) {
+                response = response.substring(0, 60000) + '\n\n... (truncated)';
+              }
+            } catch (e) {
+              response = 'Error reading Claude response';
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Claude's Analysis:\n\n${response}`
+            })
+
+      - name: Apply changes
+        if: success()
+        id: apply
+        run: |
+          python3 << 'EOF'
+          import re
+          import os
+
+          try:
+              with open('/tmp/claude_response.txt', 'r') as f:
+                  response = f.read()
+          except FileNotFoundError:
+              print("No response file found")
+              with open('/tmp/apply_status.txt', 'w') as f:
+                  f.write('no_response')
+              exit(0)
+
+          # Pattern to match FILE: path followed by content in backticks
+          pattern = r'FILE:\s*([^\n]+)\n```(?:\w*\n)?(.*?)```'
+          matches = re.findall(pattern, response, re.DOTALL)
+
+          # Fallback pattern without backticks
+          if not matches:
+              pattern = r'FILE:\s*([^\n]+)\n(.*?)(?=FILE:|$)'
+              matches = re.findall(pattern, response, re.DOTALL)
+
+          files_written = []
+          for file_path, content in matches:
+              file_path = file_path.strip()
+              content = content.strip()
+
+              # Skip if content looks like another FILE: marker got included
+              if content.startswith('FILE:'):
+                  continue
+
+              # Create directory if needed
+              dir_path = os.path.dirname(file_path)
+              if dir_path and not os.path.exists(dir_path):
+                  os.makedirs(dir_path, exist_ok=True)
+
+              print(f"Writing: {file_path}")
+              with open(file_path, 'w') as f:
+                  f.write(content)
+              files_written.append(file_path)
+
+          if files_written:
+              with open('/tmp/apply_status.txt', 'w') as f:
+                  f.write('success')
+              with open('/tmp/files_changed.txt', 'w') as f:
+                  f.write('\n'.join(files_written))
+              print(f"Updated {len(files_written)} files")
+          else:
+              with open('/tmp/apply_status.txt', 'w') as f:
+                  f.write('no_files')
+              print("No files found to update")
+          EOF
+
+      - name: Commit changes
+        if: success()
+        id: commit
+        run: |
+          if [ ! -f /tmp/apply_status.txt ] || [ "$(cat /tmp/apply_status.txt)" != "success" ]; then
+            echo "No files to commit"
+            echo "committed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          git config user.name "Claude Bot"
+          git config user.email "action@github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            echo "committed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          git commit -m "Fix: Issue #${{ steps.issue-details.outputs.issue_num }} - ${{ steps.issue-details.outputs.title }}"
+
+          # Pull any remote changes before pushing
+          git pull --rebase origin main
+
+          git push origin main
+          echo "committed=true" >> $GITHUB_OUTPUT
+
+      - name: Comment success on issue
+        if: success() && steps.commit.outputs.committed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let filesChanged = '';
+            try {
+              filesChanged = fs.readFileSync('/tmp/files_changed.txt', 'utf8');
+            } catch (e) {
+              filesChanged = 'Unknown files';
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ **Changes committed to main**\n\n**Files modified:**\n\`\`\`\n${filesChanged}\n\`\`\``
+            })
+
+      - name: Comment no changes on issue
+        if: success() && steps.commit.outputs.committed == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ **No changes were made**\n\nClaude analyzed the issue but no file modifications were detected or needed.'
+            })

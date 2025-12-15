@@ -44,13 +44,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: var(--primary);
+    color: var(--foreground);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 a:hover {
-    color: var(--primary-dark);
+    color: var(--primary);
 }
 
 /* Buttons */
@@ -206,14 +206,13 @@ a:hover {
     height: auto;
 }
 
+/* Swiper navigation arrows - simple orange arrows positioned outside */
 .reviews-slider .swiper-button-prev,
 .reviews-slider .swiper-button-next {
     width: 2.5rem;
     height: 2.5rem;
-    background: white;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border: 0;
     top: 50%;
     transform: translateY(-50%);
     color: var(--primary);
@@ -228,22 +227,11 @@ a:hover {
     right: 0;
 }
 
-.reviews-slider .swiper-button-prev:hover,
-.reviews-slider .swiper-button-next:hover {
-    background: var(--primary);
-    color: white;
-}
-
 .reviews-slider .swiper-button-prev::after,
 .reviews-slider .swiper-button-next::after {
-    font-size: 0.875rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--primary);
-}
-
-.reviews-slider .swiper-button-prev:hover::after,
-.reviews-slider .swiper-button-next:hover::after {
-    color: white;
 }
 
 /* Hide arrows on mobile */
