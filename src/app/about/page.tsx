@@ -181,7 +181,7 @@ export default function AboutPage()
                         </div>
                         <div className="flex justify-center">
                             <Image
-                                src="/cyber-essentials-badge.svg"
+                                src="/cyber-essentials-new.webp"
                                 alt="Cyber Essentials Certified"
                                 width={300}
                                 height={300}
