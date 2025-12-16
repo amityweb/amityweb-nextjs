@@ -43,6 +43,7 @@ export default function ContactForm()
         company: '',
         message: '',
     });
+    const [privacyAgreed, setPrivacyAgreed] = useState(false);
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
     const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -131,6 +132,14 @@ export default function ContactForm()
         setStatus('submitting');
         setErrorMessage('');
 
+        /* Check privacy policy agreement */
+        if (!privacyAgreed)
+        {
+            setStatus('error');
+            setErrorMessage('Please agree to the privacy policy before submitting.');
+            return;
+        }
+
         /* Check Turnstile token */
         if (!turnstileToken)
         {
@@ -158,6 +167,7 @@ export default function ContactForm()
 
             setStatus('success');
             setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+            setPrivacyAgreed(false);
             
             /* Reset Turnstile for potential next submission */
             if (widgetIdRef.current && window.turnstile)
@@ -299,6 +309,30 @@ export default function ContactForm()
                         className="w-full px-4 py-3 bg-white border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-shadow resize-vertical"
                         placeholder="Tell us about your project..."
                     />
+                </div>
+
+                {/* Privacy Policy Agreement */}
+                <div className="flex items-start gap-3">
+                    <input
+                        type="checkbox"
+                        id="privacyAgreed"
+                        checked={privacyAgreed}
+                        onChange={(e) => setPrivacyAgreed(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-[var(--primary)] border-[var(--border)] rounded focus:ring-[var(--primary)] cursor-pointer"
+                    />
+                    <label htmlFor="privacyAgreed" className="text-sm text-[var(--muted-foreground)] cursor-pointer">
+                        I agree to the{' '}
+                        <a
+                            href="/privacy-policy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[var(--primary)] hover:underline"
+                        >
+                            Privacy Policy
+                        </a>
+                        {' '}and consent to Amity Web Solutions storing my submitted information so they can respond to my enquiry.
+                        <span className="text-red-500"> *</span>
+                    </label>
                 </div>
 
                 {/* Turnstile Widget Container */}
